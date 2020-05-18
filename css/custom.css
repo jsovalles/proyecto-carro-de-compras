@@ -1,3 +1,9 @@
+ /* Custom forms Sebastian */
+ a[disabled="disabled"] {
+   pointer-events: none;
+   cursor: default;
+ }
+
 body {
     background-color: #fff6f6
 }

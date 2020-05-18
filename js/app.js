@@ -8,6 +8,7 @@ const listCursos = document.querySelector('#lista-carrito tbody');
 
 initEventListeners();
 addingLocalStorageToCart();
+totalValueSubjects();
 
 function initEventListeners() {
 
@@ -23,6 +24,8 @@ function initEventListeners() {
     //reloading a page for localStorage
     document.addEventListener('DOMContentLoader', obtainLocalStorage);
 
+    //total value
+    document.addEventListener('click', totalValueSubjects);
 
 }
 
@@ -49,27 +52,25 @@ function readValue(curso) {
 
     duplicatesFunction(infoCurso);
 
+    //disabling the buttom
+    disablingButtom(curso);
+
 }
 
 function duplicatesFunction(newCurso) {
 
     let cursosArr = obtainLocalStorage();
 
-    let cont = 0;
-    for (curso of cursosArr) {
-        if (curso.id != newCurso.id) {
-            cont = cont + 1;
-        }
-    };
+    let result = cursosArr.map(({ id }) => id); //Making an array with only the id of the current subjects
 
-
-    if (cont == cursosArr.length) {
+    if (!result.includes(newCurso.id)) {
         insertValuetoCart(newCurso);
         //adding to local storage
         addToLocalStorage(newCurso);
-    }else{
+    } else {
         alert('No puedes agregar el mismo curso dos veces');
     }
+
 }
 
 //Inserts a subject to the cart table
@@ -87,7 +88,6 @@ function insertValuetoCart(curso) {
         </td>
     `;
     listCursos.appendChild(row);
-
 }
 
 function deleteValue(e) {
@@ -95,7 +95,15 @@ function deleteValue(e) {
     e.preventDefault();
 
     if (e.target.classList.contains('borrar-curso')) {
+
+        //activate buttom if subject is deleted
+        activeButtom(e.target.parentElement.parentElement.querySelector('a').getAttribute('data-id'));
+
         deleteSubjectFromLocalStorage(e.target.parentElement.parentElement.querySelector('a').getAttribute('data-id'));
+
+        //deleting total value
+        totalValueSubjects();
+
         e.target.parentElement.parentElement.remove();
     }
 }
@@ -112,6 +120,8 @@ function deleteAllValues(e) {
         }
 
         localStorage.setItem('cursos', JSON.stringify([]));
+
+        activateAllButtoms();
     }
 
 
@@ -159,4 +169,54 @@ function deleteSubjectFromLocalStorage(id) {
         }
     });
 
+}
+
+function totalValueSubjects() {
+    let cursosLocalStorage = JSON.parse(localStorage.getItem('cursos'));
+    if (cursosLocalStorage.length != 0) {
+        cursosLocalStorage = JSON.parse(localStorage.getItem('cursos'));
+        let result = cursosLocalStorage.map(({ value }) => Number(value.substring(1, value.length))); //Making an array with only the value (without currency)
+        let resultArr = result.reduce((a, b) => { return a + b; })
+        const row = document.createElement('tr');
+        row.setAttribute("id", "total-id");
+        row.innerHTML = `
+        <td>Total:</td>
+        <td></td>
+        <td></td>
+        <td>$${resultArr}</td>
+        `;
+        while (listCursos.querySelector('#total-id') != null) {
+            listCursos.querySelector('#total-id').remove();
+        }
+        listCursos.appendChild(row);
+    }
+
+}
+
+function disablingButtom(curso) {
+    curso.querySelector('a').setAttribute("disabled", "disabled");
+}
+
+function activeButtom(id) {
+    let rows = Array.from(cursos.querySelectorAll('.row'));
+    let ans = rows.forEach(element => {
+        let ansArr = Array.from(element.children);
+        ansArr.forEach(e => {
+            let idElement = e.querySelector('a').getAttribute('data-id');
+            if (idElement == id) {
+                e.querySelector('a').removeAttribute('disabled');
+            }
+
+        })
+    })
+}
+
+function activateAllButtoms() {
+    let rows = Array.from(cursos.querySelectorAll('.row'));
+    let ans = rows.forEach(element => {
+        let ansArr = Array.from(element.children);
+        ansArr.forEach(e => {
+            e.querySelector('a').removeAttribute('disabled');
+        })
+    })
 }
