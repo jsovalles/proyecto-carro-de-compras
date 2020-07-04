@@ -2,7 +2,7 @@
 
 Proyecto JavaScript de un carro de compras
 
-##Descripción del proyecto
+## Descripción del proyecto
 
 Se realizo un simulador de una plataforma de venta de cursos informáticos con un template de Bootstrap; en este template se manejo una lista de los cursos que el usuario fue seleccionando y cada vez que el usuario seleccione un curso este es agregado al carrito de compras que esta en la parte superior derecha de la pantalla.
 
