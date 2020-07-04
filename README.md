@@ -12,7 +12,7 @@ Un usuario solamente puede comprar un curso en específico, cuando el usuario se
 
 Finalmente, para hacerlo un poco mas dinámico todos los datos de los cursos fueron guardados en el localStorage, haciendo que los datos de los cursos seleccionados puedan persistir incluso si el usuario cierra sesión en el navegador o si llega a abrir la página unos días después, se tuvo que trabajar con un formato JSON para que guardara los cursos en el local storage y se tuvo que hacer conversiones a string y a JSON cuando el usuario guarda o eliminara un curso.
 
-El resultado final del curso se puede observar en este [link](https://jsovalles.github.io/proyecto-carro-de-compras/).
+El resultado final del proyecto se puede observar en este [link](https://jsovalles.github.io/proyecto-carro-de-compras/).
 
 # Desarrollado en
 
